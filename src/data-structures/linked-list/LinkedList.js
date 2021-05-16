@@ -100,50 +100,58 @@ export default class LinkedList {
    * @param {function} [findParams.callback]
    * @return {LinkedListNode}
    */
-  find(value = undefined, callback = undefined) {
-    // If there is no head, return null 
-    if(!this.head) {
-       return null;
+  find({ value = undefined, callback = undefined }) {
+    if (!this.head) {
+      return null;
     }
+
     let currentNode = this.head;
-    
-    while(currentNode) {
-      // If call back is specified then try to find by callback
+
+    while (currentNode) {
+      // If callback is specified then try to find node by callback.
       if (callback && callback(currentNode.value)) {
         return currentNode;
       }
 
-      // If value is specified then compare the value
+      // If value is specified then try to compare by value..
       if (value !== undefined && this.compare.equal(currentNode.value, value)) {
         return currentNode;
       }
+
       currentNode = currentNode.next;
     }
-    return null;
 
+    return null;
   }
+
   /**
    * @return {LinkedListNode}
    */
-  deletetail() {
-    let deletedTail = this.tail;
-    // Check if there is only one head and one node
-    if(this.head == this.tail) {
+  deleteTail() {
+    const deletedTail = this.tail;
+
+    if (this.head === this.tail) {
+      // There is only one node in linked list.
       this.head = null;
       this.tail = null;
+
       return deletedTail;
-    } 
-    // If more than one node is present , then follow the below steps
+    }
+
+    // If there are many nodes in linked list...
+
+    // Rewind to the last node and delete "next" link for the node before the last one.
     let currentNode = this.head;
-    while(currentNode.next) {
-      if(!currentNode.next.next) {
-        currentNode = null;
-      }else{
+    while (currentNode.next) {
+      if (!currentNode.next.next) {
+        currentNode.next = null;
+      } else {
         currentNode = currentNode.next;
       }
     }
 
     this.tail = currentNode;
+
     return deletedTail;
   }
 
